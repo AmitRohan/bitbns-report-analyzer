@@ -1,0 +1,16 @@
+{
+  "name": "crypto-trade-processor",
+  "version": "0.0.1",
+  "description": "Process Trade CSV",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "coingecko-api": "^1.0.10",
+    "csv-parse": "^4.16.3"
+  }
+}
