@@ -1,5 +1,5 @@
 {
-  "name": "crypto-trade-processor",
+  "name": "bitbns-report-analyzer",
   "version": "0.0.1",
   "description": "Process Trade CSV",
   "main": "index.js",
