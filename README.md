@@ -20,8 +20,7 @@ XRP
 2. Install Project Dependencies by running ```npm install``` in your root folder
 
 # Run
-1. Rename your Bit Bns Report as REPORT.CSV and place it in reports folder.
-2. Run the project and give input based on inputs.
+Run the project and give input based on inputs.
 
 ```
     npm start
