@@ -121,6 +121,6 @@ readline.question(supportedCoins.join('\n') + `\nWhich coin?\n`, coinName => {
 });
 ;(async () => {
 await keypress()
-console.log("bye)
+console.log("bye")
 })().then(process.exit)
 
