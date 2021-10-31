@@ -4,7 +4,7 @@ services:
   bitbns-report-analyzer:
     stdin_open: true # docker run -i
     tty: true # docker run -t
-    image: ghcr.io/milindpatel63/bitbns-report-analyzer:main
+    image: ghcr.io/amitrohan/bitbns-report-analyzer:main
     container_name: bitbnsreport
     volumes:
       - /home/user/bitbns/report:/reports
