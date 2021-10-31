@@ -109,7 +109,7 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
 }
 readline.question(supportedCoins.join('\n') + `\nWhich coin?`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
-        readline.question(`Press any key to exit` => {
+        readline.question(`Press any key to exit`, anykey => {
             readline.close()
         })
     readline.close()
