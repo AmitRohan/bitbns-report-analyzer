@@ -25,3 +25,12 @@ Run the project and give input based on inputs.
 ```
     npm start
 ```
+
+# Docker guide
+Run it directly
+Save your REPORT.csv in a location and mount it to /reports in container and run it
+```
+docker run -it -v /home/user/bitbns/report:/reports ghcr.io/milin
+dpatel63/bitbns-report-analyzer:main
+```
+Or use docker-conpose.yml file and attach into container
