@@ -76,6 +76,9 @@ cryptoTradeProcessor = (coinName,inrPrice) => {
         output += "\n======================================\n"; 
         
         console.log(output)
+        readline.question(`Press any key to exit`, anykey => {
+            readline.close()
+        })
     })
 }
 var supportedCoins = [
@@ -107,11 +110,8 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
         })
     })
 }
-readline.question(supportedCoins.join('\n') + `\nWhich coin?`, coinName => {
+readline.question(supportedCoins.join('\n') + `\nWhich coin?\n`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
-        readline.question(`Press any key to exit`, anykey => {
-            readline.close()
-        })
     readline.close()
 })
 
