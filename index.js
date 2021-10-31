@@ -1,5 +1,7 @@
 const fs = require('fs')
 var parse = require('csv-parse')
+var asciichart = require ('asciichart')
+
 
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
@@ -15,6 +17,10 @@ const reportsPath = './reports/REPORT.csv';
 var getObjectsFromReports = (callback) => {
     try {
         fs.readFile(reportsPath, function (err, fileData) {
+            if(err != null){
+                console.log("Unable to find file. Please download it from https://bitbns.com/trade/#/profile/trade-report and place it as reports/report.csv");
+                return;
+            }
             parse(fileData, {columns: true, trim: true}, callback)  
         })
     }catch(e){
@@ -51,7 +57,7 @@ var processDataList = (dataset,inrPrice) => {
 }
 
 getCoinDataFromReport = (key,report) => {
-    return report.filter( row => (row.Coin == key));
+    return report.filter( row => (row.Coin.toLowerCase() == key.toLowerCase()));
 }
 
 cryptoTradeProcessor = (coinName,inrPrice) => {
@@ -62,18 +68,18 @@ cryptoTradeProcessor = (coinName,inrPrice) => {
             return
         }
         var coinData = getCoinDataFromReport(coinName,fileData);
-        
         var processedData = processDataList(coinData,inrPrice);
+
         var output = "\n\n";
-        output += "\n======================================"; 
+        output += "\n======================================================================"; 
         output += "\n\t" + coinName + " trade result"; 
-        output += "\n======================================"; 
+        output += "\n======================================================================"; 
         output += "\n\nCoins Owned : " + processedData.coinBal; 
         output += "\nCurrent Value : " + Math.abs(processedData.value);
         output += "\n\nTotal Fees Paid : " + processedData.fee;
         output += "\nMoney Invested (Without fee) : " + Math.abs(processedData.money);
         output += "\nMoney Invested (With fee) : " + Math.abs(processedData.fiat);
-        output += "\n======================================"; 
+        output += "\n======================================================================"; 
         
         console.log(output)
     })
@@ -96,18 +102,37 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
             if(resp.code != 200){
                 return;
             }
-            resp.data.map( _ => {
-                if(_.symbol == coinName.toLowerCase()){
-                    CoinGeckoClient.coins.fetch(_.id, {})
-                        .then(_resp => {
-                            const inrPrice = _resp.data.market_data.current_price.inr
-                            cryptoTradeProcessor(coinName,inrPrice)
+            resp.data.map( coinResp => {
+                if(coinResp.symbol == coinName.toLowerCase()){
+                    
+                    // Plot Chart
+                    CoinGeckoClient.coins.fetchMarketChart(coinResp.id, {days : 91, vs_currency : 'inr' , interval : 'daily '})
+                                .then(coinMarketChartData => {
+                                    const historicPrices = coinMarketChartData
+                                                                .data
+                                                                .prices
+                                                                .filter((x,i)=> i > 61) // save last 5 entry as interval field is not supported yet
+                                                                .map(x => { return Math.round(x[1]*10)/10}); // get abs value of price, 2nd param, 1st is timestamp
+                                    
+                                    var charOutputs = `\n ${coinResp.symbol} Day Wise Chart\t Current Price ${historicPrices.pop()} INR`;
+                                    charOutputs += "\n======================================"; 
+                                    charOutputs += "\n" + asciichart.plot(historicPrices,{ height: 4 })
+                                    charOutputs += "\n======================================"; 
+                                    console.log(charOutputs)
+                                                            
+                                });
+                    // Get Data
+                    CoinGeckoClient.coins.fetch(coinResp.id, {})
+                        .then(coinDataReponse => {
+                            const inrPrice = coinDataReponse.data.market_data.current_price.inr
+                            cryptoTradeProcessor(coinResp.symbol,inrPrice)
                         });
             }
         })
     })
 }
-readline.question(supportedCoins.join('\n') + `\nWhich coin?`, coinName => {
+readline.question(supportedCoins.map( (x,i) => (i+1) + " " + x ).join('\n') + `\nWhich option?`, indexToLookFor => {
+    var coinName = supportedCoins.filter( (x,i) => i == (indexToLookFor -1))[0]
     fetchLatestDataFromCoinGecko(coinName);
     readline.close()
 })
