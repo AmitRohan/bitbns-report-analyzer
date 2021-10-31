@@ -119,6 +119,8 @@ readline.question(supportedCoins.join('\n') + `\nWhich coin?\n`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
     readline.close();
 });
+;(async () => {
 await keypress()
 console.log("bye)
+})().then(process.exit)
 
