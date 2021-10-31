@@ -115,12 +115,16 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
         })
     })
 }
+const report = async () => {
 readline.question(supportedCoins.join('\n') + `\nWhich coin?\n`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
     readline.close();
-});
+})
+}
 ;(async () => {
+await report()
+console.log("\nPress any key to exit")
 await keypress()
-console.log("bye")
+console.log("\nbye\n")
 })().then(process.exit)
 
