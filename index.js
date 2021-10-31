@@ -10,14 +10,6 @@ const readline = require('readline').createInterface({
     output: process.stdout
 })
 
-const keypress = async () => {
-  process.stdin.setRawMode(true)
-  return new Promise(resolve => process.stdin.once('data', () => {
-    process.stdin.setRawMode(false)
-    resolve()
-  }))
-}
-
 const reportsPath = './reports/REPORT.csv';
 
 var getObjectsFromReports = (callback) => {
@@ -115,16 +107,13 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
         })
     })
 }
-const report = async () => {
 readline.question(supportedCoins.join('\n') + `\nWhich coin?\n`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
     readline.close();
 })
-}
-;(async () => {
-await report()
-console.log("\nPress any key to exit")
-await keypress()
-console.log("\nbye\n")
-})().then(process.exit)
+console.log('Press any key to exit');
+process.stdin.setRawMode(true);
+process.stdin.resume();
+process.stdin.on('data', process.exit.bind(process, 0));
+
 
