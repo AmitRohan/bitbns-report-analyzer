@@ -73,7 +73,7 @@ cryptoTradeProcessor = (coinName,inrPrice) => {
         output += "\n\nTotal Fees Paid : " + processedData.fee;
         output += "\nMoney Invested (Without fee) : " + Math.abs(processedData.money);
         output += "\nMoney Invested (With fee) : " + Math.abs(processedData.fiat);
-        output += "\n======================================"; 
+        output += "\n======================================\n"; 
         
         console.log(output)
     })
@@ -109,6 +109,9 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
 }
 readline.question(supportedCoins.join('\n') + `\nWhich coin?`, coinName => {
     fetchLatestDataFromCoinGecko(coinName);
+        readline.question(`Press any key to exit` => {
+            readline.close()
+        })
     readline.close()
 })
 
