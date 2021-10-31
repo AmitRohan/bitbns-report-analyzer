@@ -76,9 +76,10 @@ cryptoTradeProcessor = (coinName,inrPrice) => {
         output += "\n======================================\n"; 
         
         console.log(output)
-        readline.question(`Press any key to exit`, anykey => {
-            readline.close()
-        })
+        return new Promise(resolve => readline.question("Press any key to exit", ans => {
+        readline.close();
+        resolve(ans);
+        }))
     })
 }
 var supportedCoins = [
