@@ -74,11 +74,11 @@ cryptoTradeProcessor = (coinName,inrPrice) => {
         output += "\n======================================================================"; 
         output += "\n\t" + coinName + " trade result"; 
         output += "\n======================================================================"; 
-        output += "\n\nCoins Owned : " + processedData.coinBal; 
-        output += "\nCurrent Value : " + Math.abs(processedData.value);
-        output += "\n\nTotal Fees Paid : " + processedData.fee;
-        output += "\nMoney Invested (Without fee) : " + Math.abs(processedData.money);
-        output += "\nMoney Invested (With fee) : " + Math.abs(processedData.fiat);
+        output += "\n\nCoins Owned : " + processedData.coinBal + " " + coinName; 
+        output += "\nCurrent Value : " + Math.abs(processedData.value) + " INR";
+        output += "\n\nTotal Fees Paid : " + processedData.fee + " INR";
+        output += "\nMoney Invested (Without fee) : " + Math.abs(processedData.money) + " INR";
+        output += "\nMoney Invested (With fee) : " + Math.abs(processedData.fiat) + " INR";
         output += "\n======================================\n"; 
         output += "\nPress any key to exit.\n";         
         console.log(output)
