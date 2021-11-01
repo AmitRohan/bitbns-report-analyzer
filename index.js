@@ -107,31 +107,17 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
             resp.data.map( coinResp => {
                 if(coinResp.symbol == coinName.toLowerCase()){
                     
-                    // Old Plot Chart
-                    /*CoinGeckoClient.coins.fetchMarketChart(coinResp.id, {days : 91, vs_currency : 'inr' , interval : 'daily '})
-                                .then(coinMarketChartData => {
-                                    const historicPrices = coinMarketChartData
-                                                                .data
-                                                                .prices
-                                                                .filter((x,i)=> i > 61) // save last 5 entry as interval field is not supported yet
-                                                                .map(x => { return Math.round(x[1]*10)/10}); // get abs value of price, 2nd param, 1st is timestamp
-                                    
-                                    var charOutputs = `\n ${coinResp.symbol} Day Wise Chart\t Current Price ${historicPrices.pop()} INR`;
-                                    charOutputs += "\n======================================"; 
-                                    charOutputs += "\n" + asciichart.plot(historicPrices,{ height: 4 })
-                                    charOutputs += "\n======================================"; 
-                                    console.log(charOutputs)
-                                                            
-                                });
-								*/
                     // Get Data
+                    console.log("Fetching Latest Coin Data");
                     CoinGeckoClient.coins.fetch(coinResp.id, {})
                         .then(coinDataReponse => {
+                            console.log("Latest Coin Data Fetched");
                             const inrPrice = coinDataReponse.data.market_data.current_price.inr
-                            cryptoTradeProcessor(coinResp.symbol,inrPrice)
-							// Plot Chart
+                            
+							console.log("Fetching Historic Prices");
 							CoinGeckoClient.coins.fetchMarketChart(coinResp.id, {days : 91, vs_currency : 'inr' , interval : 'daily '})
                                 .then(coinMarketChartData => {
+                                    console.log("Historic Prices Fetched");
                                     const historicPrices = coinMarketChartData
                                                                 .data
                                                                 .prices
@@ -143,8 +129,14 @@ const fetchLatestDataFromCoinGecko = (coinName) => {
                                     charOutputs += "\n" + asciichart.plot(historicPrices,{ height: 4 })
                                     charOutputs += "\n======================================"; 
                                     console.log(charOutputs)
-                                                            
+                                    
+
+                                    console.log("Processing Report");
+                                    cryptoTradeProcessor(coinResp.symbol,inrPrice)
+
                                 });
+
+                                
                         });
             }
         })
