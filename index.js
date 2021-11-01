@@ -33,11 +33,13 @@ var processDataList = (dataset,inrPrice) => {
         var _new = prev;
         if(current.SIDE=='BUY'){
             _new.coinBal += parseFloat(current.Crypto_Amt)
-            _new.money -= (parseFloat(current.Crypto_Amt) * parseFloat(current.Rate))
+            _new.money -= ((parseFloat(current.Crypto_Amt)*100000000) * (parseFloat(current.Rate)*100000000))
+			_new.money /= 10000000000000000
             _new.fiat -= parseFloat(current.FIAT)
         }else{
             _new.coinBal -= parseFloat(current.Crypto_Amt)
-            _new.money += (parseFloat(current.Crypto_Amt) * parseFloat(current.Rate))
+            _new.money += ((parseFloat(current.Crypto_Amt)*100000000) * (parseFloat(current.Rate)*100000000))
+			_new.money /= 10000000000000000
             _new.fiat += parseFloat(current.FIAT)
         }
         
